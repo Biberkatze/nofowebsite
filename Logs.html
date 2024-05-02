@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOFO Log</title>
+  <link rel="stylesheet" href="NOFO.css">
+  <style>
+    .battle-box {
+      background-color: #fff; /* Default background color */
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px; /* Add margin between battle boxes */
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="header">NOFO Log</header>
+  <div class="nav">
+    <input type="checkbox" id="toggle_button">
+    <label for="toggle_button" class="toggle_button">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </label>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="Tank.html">Tank</a></li>
+      <li><a href="Plane.html">Plane</a></li>
+      <li><a href="Helicopter.html">Helicopter</a></li>
+      <li><a href="Ship.html">Ships</a></li>
+      <li><a href="Logs.html">Logs</a></li>
+    </ul>
+  </div>
+  <div class="main">
+    <div class="log">
+      <p id="log-content" contenteditable="true">Enter your log content here...</p>
+      <div>
+        <label for="Squadron">Squadron Name:</label>
+        <input type="text" id="Squadron" maxlength="5" placeholder="Enter Squadron name">
+      </div>
+      <div>
+        <label for="air-count">Air Count:</label>
+        <select id="air-count">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <div>
+        <label for="ground-count">Ground Count:</label>
+        <select id="ground-count">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+      </div>
+      <div>
+        <label for="spaa-count">SPAA Count:</label>
+        <select id="spaa-count">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <button id="save-button">Save</button>
+    </div>
+    <div class="past-battles">
+      <h2>Past 100 Battles</h2>
+      <div id="past-battles-list">
+        <!-- Past battles will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+  <div class="footer">Nordic Force SRE page<br>Contact: cedric.tuma@bluewin.ch<br>Special Thanks to: UrMumSaysHi, Nicolasnv, Nexx</div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const logContent = document.getElementById('log-content');
+    const saveButton = document.getElementById('save-button');
+    const squadronInput = document.getElementById('Squadron');
+    const airCountSelect = document.getElementById('air-count');
+    const groundCountSelect = document.getElementById('ground-count');
+    const spaaCountSelect = document.getElementById('spaa-count');
+    const pastBattlesList = document.getElementById('past-battles-list');
+
+    saveButton.addEventListener('click', () => {
+      const squadron = squadronInput.value.trim();
+      const airCount = airCountSelect.value;
+      const groundCount = groundCountSelect.value;
+      const spaaCount = spaaCountSelect.value;
+      const logEntry = {
+        squadron: squadron,
+        airCount: airCount,
+        groundCount: groundCount,
+        spaaCount: spaaCount,
+        content: logContent.textContent
+      };
+
+      // Save logEntry to local storage
+      localStorage.setItem('logEntry', JSON.stringify(logEntry));
+      alert('Log entry saved successfully!');
+
+      // Display past 100 battles
+      displayPastBattles();
+    });
+
+    function displayPastBattles() {
+      pastBattlesList.innerHTML = ''; // Clear the list first
+      const logEntries = JSON.parse(localStorage.getItem('pastBattles')) || [];
+      logEntries.unshift({
+        squadron: squadronInput.value.trim(),
+        airCount: airCountSelect.value,
+        groundCount: groundCountSelect.value,
+        spaaCount: spaaCountSelect.value,
+        content: logContent.textContent
+      });
+      logEntries.slice(0, 100).forEach((entry, index) => {
+        const battleBox = document.createElement('div');
+        battleBox.classList.add('battle-box');
+        battleBox.style.backgroundColor = getHeaderColor();
+        battleBox.innerHTML = `
+          <strong>Battle ${index + 1}</strong><br>
+          Squadron: ${entry.squadron}<br>
+          Air Count: ${entry.airCount}<br>
+          Ground Count: ${entry.groundCount}<br>
+          SPAA Count: ${entry.spaaCount}<br>
+          Content: ${entry.content}
+        `;
+        pastBattlesList.appendChild(battleBox);
+      });
+      localStorage.setItem('pastBattles', JSON.stringify(logEntries));
+    }
+
+    // Function to get header color
+    function getHeaderColor() {
+      const header = document.querySelector('.header');
+      const computedStyle = window.getComputedStyle(header);
+      return computedStyle.backgroundColor;
+    }
+
+    // Display past 100 battles on page load
+    displayPastBattles();
+  });
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,223 @@
+:root{
+    --background: #faeed9;
+    --nav:#025a9e;
+    --navhover:#0265b3;
+    --fontcolor: #383636;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    background: var(--background);
+    color: var(--fontcolor);
+    font-family: "Gill Sans MT";
+}
+
+.container{
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: 100%;
+    grid-template-areas:
+        "head"
+        "nav"
+        "main"
+        "foot";
+}
+
+.header{
+    grid-area: head;
+    font-size: 50px;
+    margin: 16px;
+    text-align: center;
+}
+
+.wappen{
+    float: left;
+    height: 75px;
+
+}
+.nav {
+    display: flex;
+    justify-content: center;
+    background-color: #025a9e;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    marrgin: 0;
+    background-color: #025a9e;
+}
+
+ul li {
+    margin: 0 20px;
+    background-color: #025a9e;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.main{grid-area: main;
+    text-align: justify;
+    font-size: 22px;
+    margin: 25px;
+}
+h1{
+    text-align: center;
+}
+.WarThunder{
+    max-width: 100%;
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.WarThunder img {
+    max-width: 300%;
+    max-height: 300%;
+    width: auto;
+    height: auto;
+}
+.panzer{
+    max-width: 100%;
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+    allign-items: center;
+}
+.panzer img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+.footer{grid-area: foot;
+    text-align: center;
+    padding: 20px;
+    background: var(--nav);
+    color: white;
+}
+
+
+li{
+    float:left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+li{
+    float:left;
+}
+
+li a{
+    display: block;
+    color: var(--fontcolor);
+    text-align: center;
+    padding: 25px 24px;
+    text-decoration: none;
+    font-family: "Gill Sans MT";
+    font-weight: 500;
+}
+
+past-battles{
+    color: var(--nav)
+}
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--nav);
+}
+
+li a:hover {
+    background-color: var(--navhover);
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+@media screen and (max-width: 600px) {
+    .main{
+        font-size: 18px;
+        text-align: justify;
+    }
+    .oros{
+        width: 450px;
+    }
+    .mcces{
+        width: 450px;
+    }
+    .badenpicture{
+        width: 450px;
+    }
+    li a {
+        display: block;
+        text-align: center;
+        padding: 25px 24px;
+        text-decoration: none;
+        font-family: "Gill Sans MT";
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    li{
+        float: none;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+
+    .toggle_button {
+        width: 30px;
+        height: 23px;
+
+        position: absolute;
+        top: 38px;
+        right: 25px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .bar {
+        height: 4px;
+        width: 100%;
+        background: var(--fontcolor);
+
+    }
+
+    #toggle_button:checked ~ ul {
+        display: block;
+    }
+    .WarThunder{
+        max-width: 100%;
+        max-height: 100vh;
+        display: flex;
+        justify-content: center;
+    }
+
+    .WarThunder img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+    }
+
+
+
+}
