@@ -109,39 +109,64 @@
         content: logContent.textContent
       };
 
-      // Save logEntry to local storage
-      localStorage.setItem('logEntry', JSON.stringify(logEntry));
-      alert('Log entry saved successfully!');
-
-      // Display past 100 battles
-      displayPastBattles();
+      // Save logEntry to the server
+      saveLogEntry(logEntry);
     });
 
+    // Save log entry to the server
+    function saveLogEntry(logEntry) {
+      fetch('/.netlify/functions/saveLogEntry', {
+        method: 'POST',
+        body: JSON.stringify(logEntry),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(data => {
+                alert('Log entry saved successfully!');
+                displayPastBattles();
+              })
+              .catch(error => {
+                console.error('There was a problem saving the log entry:', error);
+                alert('Failed to save log entry!');
+              });
+    }
+
+    // Display past battles from the server
     function displayPastBattles() {
       pastBattlesList.innerHTML = ''; // Clear the list first
-      const logEntries = JSON.parse(localStorage.getItem('pastBattles')) || [];
-      logEntries.unshift({
-        squadron: squadronInput.value.trim(),
-        airCount: airCountSelect.value,
-        groundCount: groundCountSelect.value,
-        spaaCount: spaaCountSelect.value,
-        content: logContent.textContent
-      });
-      logEntries.slice(0, 100).forEach((entry, index) => {
-        const battleBox = document.createElement('div');
-        battleBox.classList.add('battle-box');
-        battleBox.style.backgroundColor = getHeaderColor();
-        battleBox.innerHTML = `
-          <strong>Battle ${index + 1}</strong><br>
-          Squadron: ${entry.squadron}<br>
-          Air Count: ${entry.airCount}<br>
-          Ground Count: ${entry.groundCount}<br>
-          SPAA Count: ${entry.spaaCount}<br>
-          Content: ${entry.content}
-        `;
-        pastBattlesList.appendChild(battleBox);
-      });
-      localStorage.setItem('pastBattles', JSON.stringify(logEntries));
+      fetch('/.netlify/functions/getPastBattles')
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(logEntries => {
+                logEntries.slice(0, 100).forEach((entry, index) => {
+                  const battleBox = document.createElement('div');
+                  battleBox.classList.add('battle-box');
+                  battleBox.style.backgroundColor = getHeaderColor();
+                  battleBox.innerHTML = `
+            <strong>Battle ${index + 1}</strong><br>
+            Squadron: ${entry.squadron}<br>
+            Air Count: ${entry.airCount}<br>
+            Ground Count: ${entry.groundCount}<br>
+            SPAA Count: ${entry.spaaCount}<br>
+            Content: ${entry.content}
+          `;
+                  pastBattlesList.appendChild(battleBox);
+                });
+              })
+              .catch(error => {
+                console.error('There was a problem fetching past battles:', error);
+              });
     }
 
     // Function to get header color
@@ -157,5 +182,3 @@
 </script>
 </body>
 </html>
-
-

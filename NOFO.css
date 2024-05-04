@@ -24,6 +24,11 @@ body{
         "foot";
 }
 
+past-battles-list{
+    color: var(--nav);
+
+}
+
 .header{
     grid-area: head;
     font-size: 50px;
